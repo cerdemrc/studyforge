@@ -1,4 +1,6 @@
+import json
 import pymupdf
+
 from chunk_text import chunk_text
 
 pdf_path = "data/yapay_zekaya_giris.pdf"
@@ -10,7 +12,6 @@ with pymupdf.open(pdf_path) as document:
 
     for page_number, page in enumerate(document, start=1):
         text = page.get_text()
-
         chunks = chunk_text(text)
 
         for chunk in chunks:
@@ -19,8 +20,10 @@ with pymupdf.open(pdf_path) as document:
                 "text": chunk
             })
 
-print(f"Toplam parça sayısı: {len(all_chunks)}")
+output_path = "data/chunks.json"
 
-for index, chunk in enumerate(all_chunks, start=1):
-    print(f"\n--- Parça {index} | Sayfa {chunk['page']} ---")
-    print(chunk["text"])
+with open(output_path, "w", encoding="utf-8") as file:
+    json.dump(all_chunks, file, ensure_ascii=False, indent=2)
+
+print(f"Toplam parça: {len(all_chunks)}")
+print(f"JSON dosyası oluşturuldu: {output_path}")
