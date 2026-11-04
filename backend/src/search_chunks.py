@@ -7,28 +7,27 @@ model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
 with open("data/embedded_chunks.json", "r", encoding="utf-8") as file:
     chunks = json.load(file)
 
-query = "Yapay zeka nedir?"
+def search_chunks(query, top_k=5, threshold=0.5):
+    query_embedding = model.encode(query)
 
-query_embedding = model.encode(query)
+    chunk_embeddings = [chunk["embedding"] for chunk in chunks]
 
-chunk_embeddings = [chunk["embedding"] for chunk in chunks]
+    similarities = cos_sim(query_embedding, chunk_embeddings)[0]
 
-similarities = cos_sim(query_embedding, chunk_embeddings)[0]
+    top_results = similarities.argsort(descending=True)[:top_k]
 
-top_results = similarities.argsort(descending=True)[:5]
+    results = []
 
-result_count = 0
+    for index in top_results:
+        score = similarities[index].item()
 
-for index in top_results:
-    score = similarities[index].item()
+        if score >= threshold:
+            chunk = chunks[index]
 
-    if score < 0.50:
-        continue
+            results.append({
+                "page": chunk["page"],
+                "text": chunk["text"],
+                "similarity": score
+            })
 
-    chunk = chunks[index]
-    result_count += 1
-
-    print(f"\nBenzerlik: {score:.4f}")
-
-if result_count == 0:
-    print("Bu soruyu cevaplayacak yeterli kaynak bulunamadı.")
+    return results

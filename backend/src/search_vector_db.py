@@ -15,7 +15,19 @@ results = collection.query(
     n_results=5
 )
 
+result_count = 0
+
 for i in range(len(results["ids"][0])):
-    print(f"\nBenzerlik: {1 - results['distances'][0][i]:.4f}")
+    similarity = 1 - results["distances"][0][i]
+
+    if similarity < 0.50:
+        continue
+
+    result_count += 1
+
+    print(f"\nBenzerlik: {similarity:.4f}")
     print(f"Sayfa: {results['metadatas'][0][i]['page']}")
     print(f"Metin: {results['documents'][0][i]}")
+
+if result_count == 0:
+    print("Bu soruyu cevaplayacak yeterli kaynak bulunamadı.")
