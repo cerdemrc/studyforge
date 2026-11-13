@@ -21,7 +21,7 @@ export default function AnswerOption({
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`w-full rounded-xl border p-4 text-left text-gray-900 transition-colors ${
+      className={`w-full rounded-xl border p-4 text-left text-gray-900 transition-colors hover:cursor-pointer ${
         isCorrect
           ? "border-green-500 bg-green-100 text-green-900"
           : isWrong

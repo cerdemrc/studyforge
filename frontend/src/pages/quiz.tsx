@@ -87,7 +87,7 @@ export default function Quiz() {
           </h1>
 
           <p className="mt-2 text-gray-500">
-            Bilgini test et, eksiklerini keşfet.
+            Bilginizi test edin, eksiklerinizi keşfedin.
           </p>
         </header>
 

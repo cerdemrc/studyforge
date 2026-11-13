@@ -1,23 +1,32 @@
+
 import json
 from sentence_transformers import SentenceTransformer
 
-with open("data/chunks.json", "r", encoding="utf-8") as file:
-    chunks = json.load(file)
 
-model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
+def create_embeddings(
+    input_path: str = "data/chunks.json",
+    output_path: str = "data/embedded_chunks.json"
+):
+    with open(input_path, "r", encoding="utf-8") as file:
+        chunks = json.load(file)
 
-texts = [chunk["text"] for chunk in chunks]
+    if not chunks:
+        raise ValueError("PDF içerisinde işlenecek metin bulunamadı.")
 
-embeddings = model.encode(
-    texts,
-    batch_size=32,
-    show_progress_bar=True
-)
+    model = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
 
-for chunk, embedding in zip(chunks, embeddings):
-    chunk["embedding"] = embedding.tolist()
+    texts = [chunk["text"] for chunk in chunks]
 
-with open("data/embedded_chunks.json", "w", encoding="utf-8") as file:
-    json.dump(chunks, file, ensure_ascii=False)
+    embeddings = model.encode(
+        texts,
+        batch_size=32,
+        show_progress_bar=False
+    )
 
-print("Embedding dosyası oluşturuldu!")
+    for chunk, embedding in zip(chunks, embeddings):
+        chunk["embedding"] = embedding.tolist()
+
+    with open(output_path, "w", encoding="utf-8") as file:
+        json.dump(chunks, file, ensure_ascii=False)
+
+    return chunks

@@ -62,7 +62,7 @@ export default function QuestionCard({
               isCorrect ? "text-green-700" : "text-red-700"
             }`}
           >
-            {isCorrect ? "Doğru cevap!" : "Yanlış cevap!"}
+            {isCorrect ? "Doğru!" : "Yanlış!"}
           </h3>
 
           <p className="mt-2 text-sm leading-relaxed text-gray-700">
@@ -82,14 +82,14 @@ export default function QuestionCard({
             disabled={!selectedAnswer}
             className="rounded-xl bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-40"
           >
-            Cevabı Kontrol Et
+            Cevabını Kontrol Et
           </button>
         ) : (
           <button
             onClick={onNext}
             className="rounded-xl bg-blue-600 px-6 py-3 font-medium text-white transition hover:bg-blue-700"
           >
-            {questionNumber === totalQuestions ? "Sonucu Gör" : "Sonraki Soru"}
+            {questionNumber === totalQuestions ? "Cevabı Gör" : "Sıradaki"}
           </button>
         )}
       </div>
