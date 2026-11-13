@@ -57,8 +57,7 @@ for selected_chunk in selected_chunks:
         ]
     )
 
-    questions.append(response["message"]["content"])
+    questions.append(json.loads(response["message"]["content"]))
 
-for index, question in enumerate(questions, start=1):
-    print(f"\nSoru {index}")
-    print(question)
+with open("data/generated_questions.json", "w", encoding="utf-8") as file:
+    json.dump(questions, file, ensure_ascii=False, indent=4)
